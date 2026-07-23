@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>나를 해시태그 합니다 | 디지털 명함 만들기</title>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Noto Sans KR", sans-serif;
+      background: linear-gradient(135deg, #f5f7ff 0%, #eef7f2 100%);
+      color: #1f2937;
+    }
+    .wrap {
+      width: min(1100px, 100%);
+      margin: 0 auto;
+      padding: 28px 16px 56px;
+    }
+    .hero {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .hero .badge {
+      display: inline-flex;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: #ffffffcc;
+      border: 1px solid #e5e7eb;
+      font-size: 14px;
+      color: #4b5563;
+      margin-bottom: 12px;
+    }
+    h1 {
+      margin: 0;
+      font-size: clamp(28px, 5vw, 48px);
+      letter-spacing: -0.04em;
+    }
+    .hero p {
+      margin: 10px 0 0;
+      color: #6b7280;
+      line-height: 1.6;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 420px 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+    .panel, .previewBox {
+      background: #ffffffd9;
+      border: 1px solid #e5e7eb;
+      border-radius: 28px;
+      box-shadow: 0 20px 60px rgba(31, 41, 55, 0.08);
+      backdrop-filter: blur(16px);
+    }
+    .panel {
+      padding: 22px;
+    }
+    label {
+      display: block;
+      font-weight: 700;
+      font-size: 14px;
+      margin: 16px 0 8px;
+    }
+    input, textarea, select {
+      width: 100%;
+      border: 1px solid #d1d5db;
+      border-radius: 16px;
+      padding: 14px 15px;
+      font-size: 15px;
+      outline: none;
+      background: white;
+    }
+    textarea {
+      min-height: 82px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+    input:focus, textarea:focus, select:focus {
+      border-color: #6366f1;
+      box-shadow: 0 0 0 4px rgba(99,102,241,0.12);
+    }
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .emojiRow {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .emojiBtn {
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      border-radius: 14px;
+      font-size: 22px;
+      padding: 10px 0;
+      cursor: pointer;
+    }
+    .emojiBtn:hover {
+      background: #f3f4f6;
+    }
+    .btns {
+      display: grid;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    button.main {
+      border: 0;
+      border-radius: 18px;
+      padding: 15px 18px;
+      background: #111827;
+      color: white;
+      font-weight: 800;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button.sub {
+      border: 1px solid #d1d5db;
+      border-radius: 18px;
+      padding: 14px 18px;
+      background: white;
+      color: #374151;
+      font-weight: 700;
+      font-size: 15px;
+      cursor: pointer;
+    }
+    .hint {
+      color: #6b7280;
+      font-size: 13px;
+      line-height: 1.5;
+      margin-top: 10px;
+    }
+    .previewBox {
+      padding: 24px;
+      position: sticky;
+      top: 20px;
+    }
+    .cardStage {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 560px;
+    }
+    .namecard {
+      width: 430px;
+      min-height: 620px;
+      border-radius: 36px;
+      padding: 34px;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,.9), transparent 34%),
+        linear-gradient(145deg, #6366f1, #22c55e);
+      color: white;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 24px 70px rgba(17, 24, 39, .22);
+    }
+    .namecard::before {
+      content: "";
+      position: absolute;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      right: -90px;
+      top: -70px;
+      background: rgba(255,255,255,.18);
+    }
+    .namecard::after {
+      content: "";
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      left: -90px;
+      bottom: -80px;
+      background: rgba(255,255,255,.14);
+    }
+    .cardInner {
+      position: relative;
+      z-index: 1;
+    }
+    .topline {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 34px;
+    }
+    .program {
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      opacity: .88;
+    }
+    .avatar {
+      width: 96px;
+      height: 96px;
+      border-radius: 28px;
+      background: rgba(255,255,255,.22);
+      border: 1px solid rgba(255,255,255,.32);
+      display: grid;
+      place-items: center;
+      font-size: 50px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .mission {
+      display: inline-flex;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.22);
+      font-size: 14px;
+      font-weight: 800;
+      margin-bottom: 20px;
+      max-width: 100%;
+    }
+    .cardName {
+      font-size: 46px;
+      font-weight: 900;
+      letter-spacing: -0.06em;
+      line-height: 1.05;
+      margin-bottom: 14px;
+      word-break: keep-all;
+    }
+    .intro {
+      font-size: 19px;
+      line-height: 1.55;
+      font-weight: 700;
+      margin: 0 0 28px;
+      opacity: .96;
+      word-break: keep-all;
+    }
+    .info {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 28px;
+      font-size: 15px;
+    }
+    .info div {
+      padding: 12px 14px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.16);
+      border: 1px solid rgba(255,255,255,.18);
+      overflow-wrap: anywhere;
+    }
+    .hashTitle {
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: .08em;
+      opacity: .8;
+      margin-bottom: 10px;
+    }
+    .hashtags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .tag {
+      padding: 9px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.9);
+      color: #111827;
+      font-weight: 900;
+      font-size: 14px;
+    }
+    .footer {
+      position: absolute;
+      left: 34px;
+      right: 34px;
+      bottom: 28px;
+      z-index: 2;
+      font-size: 12px;
+      opacity: .75;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .theme-aurora { background: radial-gradient(circle at 20% 20%, rgba(255,255,255,.9), transparent 34%), linear-gradient(145deg, #6366f1, #22c55e); color: white; }
+    .theme-white { background: radial-gradient(circle at 84% 10%, rgba(99,102,241,.10), transparent 28%), radial-gradient(circle at 10% 92%, rgba(34,197,94,.10), transparent 30%), #ffffff; color: #111827; border: 1px solid #e5e7eb; }
+    .theme-bloom { background: radial-gradient(circle at 18% 18%, rgba(255,255,255,.9), transparent 34%), linear-gradient(145deg, #c084fc, #f472b6 56%, #fb7185); color: white; }
+    .theme-dark { background: radial-gradient(circle at 20% 20%, rgba(255,255,255,.18), transparent 34%), linear-gradient(145deg, #111827, #1f2937 58%, #374151); color: white; }
+    .theme-nature { background: radial-gradient(circle at 78% 14%, rgba(255,255,255,.58), transparent 26%), linear-gradient(145deg, #f6f0e4, #dcebd8 55%, #b9d7b5); color: #254031; }
+
+    .theme-white .avatar, .theme-white .mission, .theme-white .info div,
+    .theme-nature .avatar, .theme-nature .mission, .theme-nature .info div {
+      background: rgba(255,255,255,.72);
+      border-color: rgba(17,24,39,.10);
+    }
+    .theme-white .program, .theme-white .hashTitle, .theme-white .footer,
+    .theme-nature .program, .theme-nature .hashTitle, .theme-nature .footer { opacity: .72; }
+
+    .themePicker {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .themeOption {
+      position: relative;
+      border: 2px solid transparent;
+      border-radius: 18px;
+      padding: 10px;
+      background: #fff;
+      cursor: pointer;
+      text-align: left;
+      transition: .18s ease;
+      box-shadow: 0 6px 18px rgba(17,24,39,.05);
+    }
+    .themeOption:hover { transform: translateY(-1px); border-color: #c7d2fe; }
+    .themeOption.active { border-color: #111827; box-shadow: 0 0 0 3px rgba(17,24,39,.08); }
+    .themeSwatch { height: 58px; border-radius: 12px; margin-bottom: 8px; border: 1px solid rgba(17,24,39,.08); }
+    .swatch-white { background: radial-gradient(circle at 85% 10%, rgba(99,102,241,.14), transparent 28%), radial-gradient(circle at 10% 90%, rgba(34,197,94,.12), transparent 30%), #fff; }
+    .swatch-aurora { background: linear-gradient(145deg, #6366f1, #22c55e); }
+    .swatch-bloom { background: linear-gradient(145deg, #c084fc, #f472b6 56%, #fb7185); }
+    .swatch-dark { background: linear-gradient(145deg, #111827, #374151); }
+    .swatch-nature { background: linear-gradient(145deg, #f6f0e4, #dcebd8 55%, #b9d7b5); }
+    .themeName { display:block; font-weight: 900; font-size: 14px; color:#111827; }
+    .themeDesc { display:block; margin-top:3px; font-size:12px; color:#6b7280; line-height:1.3; }
+
+
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+      .previewBox {
+        position: static;
+      }
+      .cardStage {
+        min-height: auto;
+      }
+      .namecard {
+        width: 100%;
+        max-width: 430px;
+      }
+    }
+    @media (max-width: 520px) {
+      .wrap { padding: 20px 12px 40px; }
+      .panel, .previewBox { border-radius: 22px; padding: 16px; }
+      .row { grid-template-columns: 1fr; }
+      .emojiRow { grid-template-columns: repeat(4, 1fr); }
+      .namecard {
+        min-height: 590px;
+        padding: 28px;
+        border-radius: 30px;
+      }
+      .cardName { font-size: 38px; }
+      .intro { font-size: 17px; }
+      .footer { left: 28px; right: 28px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <div class="badge">DIGITAL NAME CARD MAKER</div>
+      <h1>나를 해시태그 합니다</h1>
+      <p>이름, 비전, 연락처, 오늘 발견한 해시태그를 입력하고<br>나만의 디지털 명함을 이미지로 저장하세요.</p>
+    </section>
+
+    <section class="grid">
+      <div class="panel">
+        <label>이름</label>
+        <input id="name" value="이시현" placeholder="이름을 입력하세요" />
+
+        <label>이모지 선택 또는 직접 입력</label>
+        <input id="emoji" value="🌱" maxlength="4" placeholder="예: 🌱" />
+        <div class="emojiRow">
+          <button class="emojiBtn" onclick="setEmoji('🌱')">🌱</button>
+          <button class="emojiBtn" onclick="setEmoji('🔥')">🔥</button>
+          <button class="emojiBtn" onclick="setEmoji('💡')">💡</button>
+          <button class="emojiBtn" onclick="setEmoji('🚀')">🚀</button>
+          <button class="emojiBtn" onclick="setEmoji('🎧')">🎧</button>
+          <button class="emojiBtn" onclick="setEmoji('☕')">☕</button>
+        </div>
+
+        <label>사진 업로드</label>
+        <input id="photo" type="file" accept="image/*" />
+
+        <label>비전</label>
+        <input id="mission" value="사람의 가능성을 발견하는 사람" placeholder="예: 연결을 만드는 사람" />
+
+        <div class="row">
+          <div>
+            <label>이메일</label>
+            <input id="email" value="hello@email.com" placeholder="이메일" />
+          </div>
+          <div>
+            <label>전화번호</label>
+            <input id="phone" value="010-0000-0000" placeholder="전화번호" />
+          </div>
+        </div>
+
+        <label>나를 소개하는 문구</label>
+        <textarea id="intro" placeholder="나를 소개하는 한두 문장">저는 질문을 통해 사람의 이야기를 발견하고, 함께 성장하는 순간을 좋아합니다.</textarea>
+
+        <label>오늘 발견한 해시태그 키워드</label>
+        <input id="hashtags" value="배움중독자, 연결메이커, 실행가" placeholder="쉼표로 구분해 입력하세요" />
+
+        <label>명함 배경 선택</label>
+        <input type="hidden" id="theme" value="theme-white" />
+        <div class="themePicker" id="themePicker">
+          <button type="button" class="themeOption active" data-theme="theme-white" onclick="setTheme('theme-white', this)">
+            <span class="themeSwatch swatch-white"></span><span class="themeName">클래식 화이트</span><span class="themeDesc">깨끗하고 출력하기 좋은 기본형</span>
+          </button>
+          <button type="button" class="themeOption" data-theme="theme-aurora" onclick="setTheme('theme-aurora', this)">
+            <span class="themeSwatch swatch-aurora"></span><span class="themeName">오로라</span><span class="themeDesc">블루와 그린의 생동감 있는 조합</span>
+          </button>
+          <button type="button" class="themeOption" data-theme="theme-bloom" onclick="setTheme('theme-bloom', this)">
+            <span class="themeSwatch swatch-bloom"></span><span class="themeName">블룸</span><span class="themeDesc">핑크와 퍼플의 감성적인 무드</span>
+          </button>
+          <button type="button" class="themeOption" data-theme="theme-dark" onclick="setTheme('theme-dark', this)">
+            <span class="themeSwatch swatch-dark"></span><span class="themeName">프리미엄 다크</span><span class="themeDesc">차분하고 고급스러운 발표용</span>
+          </button>
+          <button type="button" class="themeOption" data-theme="theme-nature" onclick="setTheme('theme-nature', this)">
+            <span class="themeSwatch swatch-nature"></span><span class="themeName">네이처</span><span class="themeDesc">베이지와 그린의 편안한 분위기</span>
+          </button>
+        </div>
+
+        <div class="btns">
+          <button class="main" onclick="downloadCard()">PNG 이미지로 다운로드</button>
+          <button class="sub" onclick="resetPhoto()">사진 삭제하고 이모지 사용</button>
+        </div>
+        <div class="hint">※ 다운로드가 안 될 경우, 완성된 명함 영역을 화면 캡쳐해서 저장할 수 있습니다.</div>
+      </div>
+
+      <div class="previewBox">
+        <div class="cardStage">
+          <div id="card" class="namecard theme-white">
+            <div class="cardInner">
+              <div class="topline">
+                <div class="program">#당신을_해시태그_합니다</div>
+                <div class="avatar" id="avatar">🌱</div>
+              </div>
+
+              <div class="mission" id="cardMission">사람의 가능성을 발견하는 사람</div>
+              <div class="cardName" id="cardName">이시현</div>
+              <p class="intro" id="cardIntro">저는 질문을 통해 사람의 이야기를 발견하고, 함께 성장하는 순간을 좋아합니다.</p>
+
+              <div class="info">
+                <div id="cardEmail">✉️ hello@email.com</div>
+                <div id="cardPhone">📞 010-0000-0000</div>
+              </div>
+
+              <div class="hashTitle">TODAY'S HASHTAGS</div>
+              <div class="hashtags" id="tagArea"></div>
+            </div>
+            <div class="footer">
+              <span>Digital Name Card</span>
+              <span>Made by Me</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const fields = ["name", "emoji", "mission", "email", "phone", "intro", "hashtags", "theme"];
+    let photoData = "";
+
+    function $(id) { return document.getElementById(id); }
+
+    function setTheme(theme, button) {
+      $("theme").value = theme;
+      document.querySelectorAll(".themeOption").forEach(el => el.classList.remove("active"));
+      if (button) button.classList.add("active");
+      updateCard();
+    }
+
+    function setEmoji(e) {
+      $("emoji").value = e;
+      photoData = "";
+      updateCard();
+    }
+
+    function resetPhoto() {
+      photoData = "";
+      $("photo").value = "";
+      updateCard();
+    }
+
+    function updateCard() {
+      $("cardName").textContent = $("name").value || "이름";
+      $("cardMission").textContent = $("mission").value || "비전";
+      $("cardIntro").textContent = $("intro").value || "나를 소개하는 문구를 입력하세요.";
+      $("cardEmail").textContent = "✉️ " + ($("email").value || "email@example.com");
+      $("cardPhone").textContent = "📞 " + ($("phone").value || "010-0000-0000");
+
+      const avatar = $("avatar");
+      if (photoData) {
+        avatar.innerHTML = `<img src="${photoData}" alt="프로필 사진" />`;
+      } else {
+        avatar.textContent = $("emoji").value || "🙂";
+      }
+
+      const card = $("card");
+      card.className = "namecard " + $("theme").value;
+
+      const tags = $("hashtags").value
+        .split(",")
+        .map(t => t.trim())
+        .filter(Boolean)
+        .slice(0, 6);
+
+      $("tagArea").innerHTML = tags.map(t => {
+        const clean = t.startsWith("#") ? t : "#" + t;
+        return `<span class="tag">${clean}</span>`;
+      }).join("");
+    }
+
+    $("photo").addEventListener("change", function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        photoData = event.target.result;
+        updateCard();
+      };
+      reader.readAsDataURL(file);
+    });
+
+    fields.filter(id => id !== "theme").forEach(id => $(id).addEventListener("input", updateCard));
+    updateCard();
+
+    async function downloadCard() {
+      const card = $("card");
+      const canvas = await html2canvas(card, {
+        scale: 3,
+        useCORS: true,
+        backgroundColor: null
+      });
+
+      const link = document.createElement("a");
+      const name = ($("name").value || "digital-name-card").replace(/[\\/:*?"<>|]/g, "");
+      link.download = `${name}_디지털명함.png`;
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+    }
+  </script>
+</body>
+</html>
