@@ -87,23 +87,6 @@
       grid-template-columns: 1fr 1fr;
       gap: 10px;
     }
-    .emojiRow {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 8px;
-      margin-top: 8px;
-    }
-    .emojiBtn {
-      border: 1px solid #e5e7eb;
-      background: #fff;
-      border-radius: 14px;
-      font-size: 22px;
-      padding: 10px 0;
-      cursor: pointer;
-    }
-    .emojiBtn:hover {
-      background: #f3f4f6;
-    }
     .btns {
       display: grid;
       gap: 10px;
@@ -213,30 +196,12 @@
       height: 100%;
       object-fit: cover;
     }
-    .mission {
-      display: inline-flex;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.22);
-      font-size: 14px;
-      font-weight: 800;
-      margin-bottom: 20px;
-      max-width: 100%;
-    }
     .cardName {
       font-size: 46px;
       font-weight: 900;
       letter-spacing: -0.06em;
       line-height: 1.05;
       margin-bottom: 14px;
-      word-break: keep-all;
-    }
-    .intro {
-      font-size: 19px;
-      line-height: 1.55;
-      font-weight: 700;
-      margin: 0 0 28px;
-      opacity: .96;
       word-break: keep-all;
     }
     .info {
@@ -259,18 +224,28 @@
       opacity: .8;
       margin-bottom: 10px;
     }
-    .hashtags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
+    .pickedList {
+      display: grid;
+      gap: 12px;
+      margin: 0 0 28px;
     }
-    .tag {
-      padding: 9px 12px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.9);
-      color: #111827;
-      font-weight: 900;
-      font-size: 14px;
+    .pickedList p {
+      font-size: 19px;
+      line-height: 1.5;
+      font-weight: 700;
+      margin: 0;
+      word-break: keep-all;
+    }
+    .pickedList .empty {
+      font-size: 16px;
+      font-weight: 700;
+      opacity: .55;
+    }
+    .perkText {
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.5;
+      word-break: keep-all;
     }
     .footer {
       position: absolute;
@@ -285,7 +260,7 @@
       gap: 10px;
     }
     .theme-white { background: radial-gradient(circle at 84% 10%, rgba(99,102,241,.10), transparent 28%), radial-gradient(circle at 10% 92%, rgba(34,197,94,.10), transparent 30%), #ffffff; color: #111827; border: 1px solid #e5e7eb; }
-    .theme-white .avatar, .theme-white .mission, .theme-white .info div {
+    .theme-white .avatar, .theme-white .info div {
       background: rgba(255,255,255,.72);
       border-color: rgba(17,24,39,.10);
     }
@@ -316,7 +291,7 @@
       font-weight: 900; font-size: 14px;
       flex-shrink: 0;
     }
-    .heartBtn {
+    .heartStat {
       border: 1px solid #fecdd3;
       background: #fff1f2;
       color: #be123c;
@@ -324,12 +299,9 @@
       padding: 7px 13px;
       font-size: 14px;
       font-weight: 800;
-      cursor: pointer;
       display: inline-flex; align-items: center; gap: 5px;
-      transition: transform .12s ease;
+      user-select: none;
     }
-    .heartBtn:hover { background: #ffe4e6; }
-    .heartBtn.pop { transform: scale(1.18); }
     .pickLabel {
       margin: 0 0 0 auto;
       display: inline-flex; align-items: center; gap: 6px;
@@ -365,7 +337,6 @@
     }
     .hmAvatar img { width: 100%; height: 100%; object-fit: cover; }
     .hmName { font-size: 30px; font-weight: 900; letter-spacing: -.05em; }
-    .hmMission { color: #6b7280; font-weight: 700; margin-top: 4px; }
     .hmGuide {
       text-align: center;
       color: #4b5563;
@@ -438,14 +409,14 @@
       .wrap { padding: 20px 12px 40px; }
       .panel, .previewBox { border-radius: 22px; padding: 16px; }
       .row { grid-template-columns: 1fr; }
-      .emojiRow { grid-template-columns: repeat(4, 1fr); }
+
       .namecard {
         min-height: 590px;
         padding: 28px;
         border-radius: 30px;
       }
       .cardName { font-size: 38px; }
-      .intro { font-size: 17px; }
+      .pickedList p { font-size: 17px; }
       .footer { left: 28px; right: 28px; }
       .pickLabel { margin: 4px 0 0; width: 100%; }
       .hmName { font-size: 26px; }
@@ -467,22 +438,8 @@
         <label>이름</label>
         <input id="name" value="정재이" placeholder="이름을 입력하세요" />
 
-        <label>이모지 선택 또는 직접 입력</label>
-        <input id="emoji" value="🌱" maxlength="4" placeholder="예: 🌱" />
-        <div class="emojiRow">
-          <button class="emojiBtn" onclick="setEmoji('🌱')">🌱</button>
-          <button class="emojiBtn" onclick="setEmoji('🔥')">🔥</button>
-          <button class="emojiBtn" onclick="setEmoji('💡')">💡</button>
-          <button class="emojiBtn" onclick="setEmoji('🚀')">🚀</button>
-          <button class="emojiBtn" onclick="setEmoji('🎧')">🎧</button>
-          <button class="emojiBtn" onclick="setEmoji('☕')">☕</button>
-        </div>
-
         <label>프로필 사진</label>
         <input id="photo" type="file" accept="image/*" />
-
-        <label>나를 찾아줘</label>
-        <input id="mission" value="사람의 가능성을 발견하는 사람" placeholder="예: 연결을 만드는 사람" />
 
         <div class="row">
           <div>
@@ -495,53 +452,53 @@
           </div>
         </div>
 
-        <label>나를 소개하는 문구</label>
-        <div class="hint" style="margin:0 0 4px">네 가지를 쓰고, 사람들에게 하트를 받아보세요. 그중 하나를 골라 명함에 올립니다.</div>
+        <label>나를 찾아줘</label>
+        <div class="hint" style="margin:0 0 4px">네 가지를 쓰고 사람들에게 하트를 받은 뒤, 그중 <b>최대 2개</b>를 골라 명함에 올립니다.</div>
         <div class="introList" id="introList">
           <div class="introItem" id="introItem0">
             <div class="introHead">
               <span class="introNum">1</span>
-              <button type="button" class="heartBtn" id="heartBtn0" onclick="addHeart(0)">🤍 <b id="heartCount0">0</b></button>
-              <label class="pickLabel"><input type="radio" name="pick" onchange="setPick(0)" /> 명함에 올리기</label>
+              <span class="heartStat" id="heartStat0">🤍 <b id="heartCount0">0</b></span>
+              <label class="pickLabel"><input type="checkbox" id="pick0" onchange="togglePick(0)" /> 명함에 올리기</label>
             </div>
             <input id="intro0" value="저는 질문을 통해 사람의 이야기를 발견합니다" placeholder="1번 문구" />
           </div>
           <div class="introItem" id="introItem1">
             <div class="introHead">
               <span class="introNum">2</span>
-              <button type="button" class="heartBtn" id="heartBtn1" onclick="addHeart(1)">🤍 <b id="heartCount1">0</b></button>
-              <label class="pickLabel"><input type="radio" name="pick" onchange="setPick(1)" /> 명함에 올리기</label>
+              <span class="heartStat" id="heartStat1">🤍 <b id="heartCount1">0</b></span>
+              <label class="pickLabel"><input type="checkbox" id="pick1" onchange="togglePick(1)" /> 명함에 올리기</label>
             </div>
             <input id="intro1" value="함께 성장하는 순간을 가장 좋아합니다" placeholder="2번 문구" />
           </div>
           <div class="introItem" id="introItem2">
             <div class="introHead">
               <span class="introNum">3</span>
-              <button type="button" class="heartBtn" id="heartBtn2" onclick="addHeart(2)">🤍 <b id="heartCount2">0</b></button>
-              <label class="pickLabel"><input type="radio" name="pick" onchange="setPick(2)" /> 명함에 올리기</label>
+              <span class="heartStat" id="heartStat2">🤍 <b id="heartCount2">0</b></span>
+              <label class="pickLabel"><input type="checkbox" id="pick2" onchange="togglePick(2)" /> 명함에 올리기</label>
             </div>
             <input id="intro2" value="배운 것은 반드시 현장에서 써먹어 봅니다" placeholder="3번 문구" />
           </div>
           <div class="introItem" id="introItem3">
             <div class="introHead">
               <span class="introNum">4</span>
-              <button type="button" class="heartBtn" id="heartBtn3" onclick="addHeart(3)">🤍 <b id="heartCount3">0</b></button>
-              <label class="pickLabel"><input type="radio" name="pick" onchange="setPick(3)" /> 명함에 올리기</label>
+              <span class="heartStat" id="heartStat3">🤍 <b id="heartCount3">0</b></span>
+              <label class="pickLabel"><input type="checkbox" id="pick3" onchange="togglePick(3)" /> 명함에 올리기</label>
             </div>
             <input id="intro3" value="처음 만난 사람과도 금방 편해집니다" placeholder="4번 문구" />
           </div>
         </div>
 
         <label>나랑 친해지면 좋은 점</label>
-        <input id="hashtags" value="배움중독자, 연결메이커, 실행가" placeholder="쉼표로 구분해 입력하세요" />
+        <input id="perk" value="새로운 걸 배우면 제일 먼저 나눠 줍니다" placeholder="한 문장으로 적어주세요" />
 
         <div class="btns">
           <button class="main" onclick="enterHeartMode()">🤍 하트 받기 시작</button>
           <button class="main" onclick="downloadCard()">PNG 이미지로 다운로드</button>
-          <button class="sub" onclick="resetPhoto()">사진 삭제하고 이모지 사용</button>
+          <button class="sub" onclick="resetPhoto()">프로필 사진 삭제</button>
           <button class="sub" onclick="resetHearts()">하트 전체 초기화</button>
         </div>
-        <div class="hint">※ 하트 받기 시작을 누르면 입력칸이 숨겨진 화면으로 바뀝니다. 그 상태로 기기를 건네주세요.<br>※ 다운로드가 안 될 경우, 완성된 명함 영역을 화면 캡쳐해서 저장할 수 있습니다.</div>
+        <div class="hint">※ 하트는 <b>하트 받기 시작</b>을 누른 화면에서만 누를 수 있습니다. 그 상태로 기기를 건네주세요.<br>※ 다운로드가 안 될 경우, 완성된 명함 영역을 화면 캡쳐해서 저장할 수 있습니다.</div>
       </div>
 
       <div class="previewBox">
@@ -550,12 +507,11 @@
             <div class="cardInner">
               <div class="topline">
                 <div class="program">#당신을_해시태그_합니다</div>
-                <div class="avatar" id="avatar">🌱</div>
+                <div class="avatar" id="avatar">정</div>
               </div>
 
-              <div class="mission" id="cardMission">사람의 가능성을 발견하는 사람</div>
               <div class="cardName" id="cardName">정재이</div>
-              <p class="intro" id="cardIntro">저는 질문을 통해 사람의 이야기를 발견합니다</p>
+              <div class="pickedList" id="cardPicked"></div>
 
               <div class="info">
                 <div id="cardEmail">✉️ hello@email.com</div>
@@ -563,7 +519,7 @@
               </div>
 
               <div class="hashTitle">나랑 친해지면 좋은 점</div>
-              <div class="hashtags" id="tagArea"></div>
+              <div class="perkText" id="cardPerk"></div>
             </div>
             <div class="footer">
               <span>나를 찾아줘</span>
@@ -578,9 +534,8 @@
   <div class="heartMode" id="heartMode">
     <div class="hmInner">
       <div class="hmProfile">
-        <div class="hmAvatar" id="hmAvatar">🌱</div>
+        <div class="hmAvatar" id="hmAvatar">정</div>
         <div class="hmName" id="hmName">정재이</div>
-        <div class="hmMission" id="hmMission">사람의 가능성을 발견하는 사람</div>
       </div>
       <p class="hmGuide">공감 가는 문구에 하트를 눌러주세요<br>여러 개 눌러도 괜찮아요</p>
       <div class="hmList" id="hmList"></div>
@@ -589,13 +544,14 @@
   </div>
 
   <script>
-    const STORE_KEY = "namecard-v2";
-    const textFields = ["name", "emoji", "mission", "email", "phone", "hashtags"];
+    const STORE_KEY = "namecard-v3";
+    const textFields = ["name", "email", "phone", "perk"];
     const introFields = ["intro0", "intro1", "intro2", "intro3"];
+    const MAX_PICK = 2;
 
     let photoData = "";
     let hearts = [0, 0, 0, 0];
-    let picked = 0;
+    let picks = [0];   // 명함에 올린 문구 번호, 고른 순서대로 최대 2개
 
     function $(id) { return document.getElementById(id); }
 
@@ -605,24 +561,16 @@
       }[c]));
     }
 
-    function setEmoji(e) {
-      $("emoji").value = e;
-      photoData = "";
-      $("photo").value = "";
-      render();
-    }
-
     function resetPhoto() {
       photoData = "";
       $("photo").value = "";
       render();
     }
 
-    /* ===== 하트 ===== */
+    /* ===== 하트 (하트 받기 모드에서만 누를 수 있습니다) ===== */
     function addHeart(i) {
       hearts[i]++;
       render();
-      pop($("heartBtn" + i));
       pop($("hmHeart" + i));
     }
 
@@ -638,8 +586,15 @@
       render();
     }
 
-    function setPick(i) {
-      picked = i;
+    /* ===== 명함에 올릴 문구 고르기 (최대 2개) ===== */
+    function togglePick(i) {
+      if (picks.includes(i)) {
+        picks = picks.filter(n => n !== i);
+      } else {
+        picks.push(i);
+        // 2개를 넘으면 가장 먼저 고른 것을 내립니다
+        if (picks.length > MAX_PICK) picks.shift();
+      }
       render();
     }
 
@@ -657,46 +612,40 @@
 
     /* ===== 화면 그리기 ===== */
     function render() {
-      const name = $("name").value || "이름";
-      const mission = $("mission").value || "나를 찾아줘";
+      const name = $("name").value.trim() || "이름";
       const intros = introFields.map(id => $(id).value.trim());
+
+      // 사진이 없으면 이름 첫 글자를 보여줍니다
+      const avatarImg = photoData ? `<img src="${photoData}" alt="프로필 사진" />` : null;
+      const initial = name.charAt(0);
+      [["avatar", 50], ["hmAvatar", 50]].forEach(([id]) => {
+        const el = $(id);
+        if (avatarImg) el.innerHTML = avatarImg;
+        else el.textContent = initial;
+      });
 
       // 명함
       $("cardName").textContent = name;
-      $("cardMission").textContent = mission;
-      $("cardIntro").textContent = intros[picked] || "명함에 올릴 문구를 골라주세요.";
       $("cardEmail").textContent = "✉️ " + ($("email").value || "email@example.com");
       $("cardPhone").textContent = "📞 " + ($("phone").value || "010-0000-0000");
+      $("cardPerk").textContent = $("perk").value.trim() || "한 문장으로 적어주세요";
 
-      const avatarHTML = photoData
-        ? `<img src="${photoData}" alt="프로필 사진" />`
-        : null;
-      const avatar = $("avatar");
-      if (avatarHTML) avatar.innerHTML = avatarHTML;
-      else avatar.textContent = $("emoji").value || "🙂";
+      const chosen = picks.filter(i => intros[i]);
+      $("cardPicked").innerHTML = chosen.length
+        ? chosen.map(i => `<p>${esc(intros[i])}</p>`).join("")
+        : `<p class="empty">명함에 올릴 문구를 골라주세요</p>`;
 
-      const tags = $("hashtags").value.split(",").map(t => t.trim()).filter(Boolean).slice(0, 6);
-      $("tagArea").innerHTML = tags.map(t => {
-        const clean = t.startsWith("#") ? t : "#" + t;
-        return `<span class="tag">${esc(clean)}</span>`;
-      }).join("");
-
-      // 편집 화면의 하트 수 / 선택 표시
+      // 편집 화면: 하트 수는 표시만, 선택은 체크박스
       hearts.forEach((n, i) => {
         $("heartCount" + i).textContent = n;
-        $("heartBtn" + i).firstChild.nodeValue = n > 0 ? "❤️ " : "🤍 ";
-        $("introItem" + i).classList.toggle("picked", i === picked);
+        $("heartStat" + i).firstChild.nodeValue = n > 0 ? "❤️ " : "🤍 ";
+        const on = picks.includes(i);
+        $("pick" + i).checked = on;
+        $("introItem" + i).classList.toggle("picked", on);
       });
-      const radios = document.querySelectorAll('input[name="pick"]');
-      if (radios[picked]) radios[picked].checked = true;
 
-      // 하트 받기 모드 화면
+      // 하트 받기 모드
       $("hmName").textContent = name;
-      $("hmMission").textContent = mission;
-      const hmAvatar = $("hmAvatar");
-      if (avatarHTML) hmAvatar.innerHTML = avatarHTML;
-      else hmAvatar.textContent = $("emoji").value || "🙂";
-
       const filled = intros.map((t, i) => ({ t, i })).filter(x => x.t);
       $("hmList").innerHTML = filled.length
         ? filled.map(({ t, i }) => `
@@ -715,7 +664,7 @@
     /* ===== 저장 / 불러오기 ===== */
     function save() {
       try {
-        const data = { hearts, picked, photoData };
+        const data = { hearts, picks, photoData };
         textFields.concat(introFields).forEach(id => data[id] = $(id).value);
         localStorage.setItem(STORE_KEY, JSON.stringify(data));
       } catch (e) { /* 저장 공간이 없어도 앱은 그대로 동작합니다 */ }
@@ -734,8 +683,8 @@
       if (Array.isArray(data.hearts) && data.hearts.length === 4) {
         hearts = data.hearts.map(n => Number(n) || 0);
       }
-      if (typeof data.picked === "number" && data.picked >= 0 && data.picked <= 3) {
-        picked = data.picked;
+      if (Array.isArray(data.picks)) {
+        picks = data.picks.filter(n => n >= 0 && n <= 3).slice(0, MAX_PICK);
       }
       if (typeof data.photoData === "string") photoData = data.photoData;
     }
