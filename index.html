@@ -284,47 +284,139 @@
       justify-content: space-between;
       gap: 10px;
     }
-    .theme-aurora { background: radial-gradient(circle at 20% 20%, rgba(255,255,255,.9), transparent 34%), linear-gradient(145deg, #6366f1, #22c55e); color: white; }
     .theme-white { background: radial-gradient(circle at 84% 10%, rgba(99,102,241,.10), transparent 28%), radial-gradient(circle at 10% 92%, rgba(34,197,94,.10), transparent 30%), #ffffff; color: #111827; border: 1px solid #e5e7eb; }
-    .theme-bloom { background: radial-gradient(circle at 18% 18%, rgba(255,255,255,.9), transparent 34%), linear-gradient(145deg, #c084fc, #f472b6 56%, #fb7185); color: white; }
-    .theme-dark { background: radial-gradient(circle at 20% 20%, rgba(255,255,255,.18), transparent 34%), linear-gradient(145deg, #111827, #1f2937 58%, #374151); color: white; }
-    .theme-nature { background: radial-gradient(circle at 78% 14%, rgba(255,255,255,.58), transparent 26%), linear-gradient(145deg, #f6f0e4, #dcebd8 55%, #b9d7b5); color: #254031; }
-
-    .theme-white .avatar, .theme-white .mission, .theme-white .info div,
-    .theme-nature .avatar, .theme-nature .mission, .theme-nature .info div {
+    .theme-white .avatar, .theme-white .mission, .theme-white .info div {
       background: rgba(255,255,255,.72);
       border-color: rgba(17,24,39,.10);
     }
-    .theme-white .program, .theme-white .hashTitle, .theme-white .footer,
-    .theme-nature .program, .theme-nature .hashTitle, .theme-nature .footer { opacity: .72; }
+    .theme-white .program, .theme-white .hashTitle, .theme-white .footer { opacity: .72; }
 
-    .themePicker {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-      margin-top: 8px;
-    }
-    .themeOption {
-      position: relative;
-      border: 2px solid transparent;
-      border-radius: 18px;
-      padding: 10px;
+    /* ===== 나를 소개하는 문구 4개 + 하트 ===== */
+    .introList { display: grid; gap: 12px; margin-top: 8px; }
+    .introItem {
+      border: 2px solid #e5e7eb;
+      border-radius: 20px;
+      padding: 12px;
       background: #fff;
-      cursor: pointer;
-      text-align: left;
       transition: .18s ease;
-      box-shadow: 0 6px 18px rgba(17,24,39,.05);
     }
-    .themeOption:hover { transform: translateY(-1px); border-color: #c7d2fe; }
-    .themeOption.active { border-color: #111827; box-shadow: 0 0 0 3px rgba(17,24,39,.08); }
-    .themeSwatch { height: 58px; border-radius: 12px; margin-bottom: 8px; border: 1px solid rgba(17,24,39,.08); }
-    .swatch-white { background: radial-gradient(circle at 85% 10%, rgba(99,102,241,.14), transparent 28%), radial-gradient(circle at 10% 90%, rgba(34,197,94,.12), transparent 30%), #fff; }
-    .swatch-aurora { background: linear-gradient(145deg, #6366f1, #22c55e); }
-    .swatch-bloom { background: linear-gradient(145deg, #c084fc, #f472b6 56%, #fb7185); }
-    .swatch-dark { background: linear-gradient(145deg, #111827, #374151); }
-    .swatch-nature { background: linear-gradient(145deg, #f6f0e4, #dcebd8 55%, #b9d7b5); }
-    .themeName { display:block; font-weight: 900; font-size: 14px; color:#111827; }
-    .themeDesc { display:block; margin-top:3px; font-size:12px; color:#6b7280; line-height:1.3; }
+    .introItem.picked { border-color: #111827; box-shadow: 0 0 0 3px rgba(17,24,39,.07); }
+    .introHead {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+    .introNum {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: #111827; color: #fff;
+      display: grid; place-items: center;
+      font-weight: 900; font-size: 14px;
+      flex-shrink: 0;
+    }
+    .heartBtn {
+      border: 1px solid #fecdd3;
+      background: #fff1f2;
+      color: #be123c;
+      border-radius: 999px;
+      padding: 7px 13px;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex; align-items: center; gap: 5px;
+      transition: transform .12s ease;
+    }
+    .heartBtn:hover { background: #ffe4e6; }
+    .heartBtn.pop { transform: scale(1.18); }
+    .pickLabel {
+      margin: 0 0 0 auto;
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 13px; font-weight: 700; color: #4b5563;
+      cursor: pointer;
+    }
+    .pickLabel input { width: auto; }
+
+    /* ===== 하트 받기 모드 ===== */
+    .heartMode {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 99;
+      background: linear-gradient(135deg, #f5f7ff 0%, #eef7f2 100%);
+      overflow-y: auto;
+      padding: 24px 16px 40px;
+    }
+    body.heartOn .heartMode { display: block; }
+    body.heartOn .wrap { display: none; }
+    .hmInner { width: min(560px, 100%); margin: 0 auto; }
+    .hmProfile { text-align: center; margin-bottom: 6px; }
+    .hmAvatar {
+      width: 96px; height: 96px;
+      margin: 0 auto 10px;
+      border-radius: 30px;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      box-shadow: 0 10px 30px rgba(17,24,39,.10);
+      display: grid; place-items: center;
+      font-size: 50px;
+      overflow: hidden;
+    }
+    .hmAvatar img { width: 100%; height: 100%; object-fit: cover; }
+    .hmName { font-size: 30px; font-weight: 900; letter-spacing: -.05em; }
+    .hmMission { color: #6b7280; font-weight: 700; margin-top: 4px; }
+    .hmGuide {
+      text-align: center;
+      color: #4b5563;
+      font-size: 15px;
+      margin: 18px 0 16px;
+      line-height: 1.5;
+    }
+    .hmList { display: grid; gap: 12px; margin-bottom: 22px; }
+    .hmItem {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 22px;
+      padding: 18px;
+      box-shadow: 0 10px 30px rgba(17,24,39,.06);
+    }
+    .hmNum {
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      background: #111827; color: #fff;
+      display: grid; place-items: center;
+      font-weight: 900; font-size: 13px;
+      margin-bottom: 10px;
+    }
+    .hmText {
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.55;
+      word-break: keep-all;
+      margin-bottom: 14px;
+    }
+    .hmHeart {
+      width: 100%;
+      border: 0;
+      border-radius: 18px;
+      padding: 16px;
+      background: #fff1f2;
+      color: #be123c;
+      font-size: 19px;
+      font-weight: 900;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      transition: transform .12s ease;
+    }
+    .hmHeart:active { background: #ffe4e6; }
+    .hmHeart.pop { transform: scale(1.06); }
+    .hmEmpty {
+      text-align: center;
+      color: #9ca3af;
+      padding: 24px;
+      line-height: 1.6;
+    }
 
 
     @media (max-width: 900px) {
@@ -355,6 +447,10 @@
       .cardName { font-size: 38px; }
       .intro { font-size: 17px; }
       .footer { left: 28px; right: 28px; }
+      .pickLabel { margin: 4px 0 0; width: 100%; }
+      .hmName { font-size: 26px; }
+      .hmText { font-size: 17px; }
+      .hmItem { padding: 16px; border-radius: 20px; }
     }
   </style>
 </head>
@@ -363,13 +459,13 @@
     <section class="hero">
       <div class="badge">DIGITAL NAME CARD MAKER</div>
       <h1>나를 해시태그 합니다</h1>
-      <p>이름, 비전, 연락처, 오늘 발견한 해시태그를 입력하고<br>나만의 디지털 명함을 이미지로 저장하세요.</p>
+      <p>나를 소개하는 네 가지 문구를 쓰고, 사람들에게 하트를 받아보세요.<br>가장 마음에 드는 문구를 골라 나만의 디지털 명함을 저장합니다.</p>
     </section>
 
     <section class="grid">
       <div class="panel">
         <label>이름</label>
-        <input id="name" value="이시현" placeholder="이름을 입력하세요" />
+        <input id="name" value="정재이" placeholder="이름을 입력하세요" />
 
         <label>이모지 선택 또는 직접 입력</label>
         <input id="emoji" value="🌱" maxlength="4" placeholder="예: 🌱" />
@@ -382,10 +478,10 @@
           <button class="emojiBtn" onclick="setEmoji('☕')">☕</button>
         </div>
 
-        <label>사진 업로드</label>
+        <label>프로필 사진</label>
         <input id="photo" type="file" accept="image/*" />
 
-        <label>비전</label>
+        <label>나를 찾아줘</label>
         <input id="mission" value="사람의 가능성을 발견하는 사람" placeholder="예: 연결을 만드는 사람" />
 
         <div class="row">
@@ -400,36 +496,52 @@
         </div>
 
         <label>나를 소개하는 문구</label>
-        <textarea id="intro" placeholder="나를 소개하는 한두 문장">저는 질문을 통해 사람의 이야기를 발견하고, 함께 성장하는 순간을 좋아합니다.</textarea>
+        <div class="hint" style="margin:0 0 4px">네 가지를 쓰고, 사람들에게 하트를 받아보세요. 그중 하나를 골라 명함에 올립니다.</div>
+        <div class="introList" id="introList">
+          <div class="introItem" id="introItem0">
+            <div class="introHead">
+              <span class="introNum">1</span>
+              <button type="button" class="heartBtn" id="heartBtn0" onclick="addHeart(0)">🤍 <b id="heartCount0">0</b></button>
+              <label class="pickLabel"><input type="radio" name="pick" onchange="setPick(0)" /> 명함에 올리기</label>
+            </div>
+            <input id="intro0" value="저는 질문을 통해 사람의 이야기를 발견합니다" placeholder="1번 문구" />
+          </div>
+          <div class="introItem" id="introItem1">
+            <div class="introHead">
+              <span class="introNum">2</span>
+              <button type="button" class="heartBtn" id="heartBtn1" onclick="addHeart(1)">🤍 <b id="heartCount1">0</b></button>
+              <label class="pickLabel"><input type="radio" name="pick" onchange="setPick(1)" /> 명함에 올리기</label>
+            </div>
+            <input id="intro1" value="함께 성장하는 순간을 가장 좋아합니다" placeholder="2번 문구" />
+          </div>
+          <div class="introItem" id="introItem2">
+            <div class="introHead">
+              <span class="introNum">3</span>
+              <button type="button" class="heartBtn" id="heartBtn2" onclick="addHeart(2)">🤍 <b id="heartCount2">0</b></button>
+              <label class="pickLabel"><input type="radio" name="pick" onchange="setPick(2)" /> 명함에 올리기</label>
+            </div>
+            <input id="intro2" value="배운 것은 반드시 현장에서 써먹어 봅니다" placeholder="3번 문구" />
+          </div>
+          <div class="introItem" id="introItem3">
+            <div class="introHead">
+              <span class="introNum">4</span>
+              <button type="button" class="heartBtn" id="heartBtn3" onclick="addHeart(3)">🤍 <b id="heartCount3">0</b></button>
+              <label class="pickLabel"><input type="radio" name="pick" onchange="setPick(3)" /> 명함에 올리기</label>
+            </div>
+            <input id="intro3" value="처음 만난 사람과도 금방 편해집니다" placeholder="4번 문구" />
+          </div>
+        </div>
 
-        <label>오늘 발견한 해시태그 키워드</label>
+        <label>나랑 친해지면 좋은 점</label>
         <input id="hashtags" value="배움중독자, 연결메이커, 실행가" placeholder="쉼표로 구분해 입력하세요" />
 
-        <label>명함 배경 선택</label>
-        <input type="hidden" id="theme" value="theme-white" />
-        <div class="themePicker" id="themePicker">
-          <button type="button" class="themeOption active" data-theme="theme-white" onclick="setTheme('theme-white', this)">
-            <span class="themeSwatch swatch-white"></span><span class="themeName">클래식 화이트</span><span class="themeDesc">깨끗하고 출력하기 좋은 기본형</span>
-          </button>
-          <button type="button" class="themeOption" data-theme="theme-aurora" onclick="setTheme('theme-aurora', this)">
-            <span class="themeSwatch swatch-aurora"></span><span class="themeName">오로라</span><span class="themeDesc">블루와 그린의 생동감 있는 조합</span>
-          </button>
-          <button type="button" class="themeOption" data-theme="theme-bloom" onclick="setTheme('theme-bloom', this)">
-            <span class="themeSwatch swatch-bloom"></span><span class="themeName">블룸</span><span class="themeDesc">핑크와 퍼플의 감성적인 무드</span>
-          </button>
-          <button type="button" class="themeOption" data-theme="theme-dark" onclick="setTheme('theme-dark', this)">
-            <span class="themeSwatch swatch-dark"></span><span class="themeName">프리미엄 다크</span><span class="themeDesc">차분하고 고급스러운 발표용</span>
-          </button>
-          <button type="button" class="themeOption" data-theme="theme-nature" onclick="setTheme('theme-nature', this)">
-            <span class="themeSwatch swatch-nature"></span><span class="themeName">네이처</span><span class="themeDesc">베이지와 그린의 편안한 분위기</span>
-          </button>
-        </div>
-
         <div class="btns">
+          <button class="main" onclick="enterHeartMode()">🤍 하트 받기 시작</button>
           <button class="main" onclick="downloadCard()">PNG 이미지로 다운로드</button>
           <button class="sub" onclick="resetPhoto()">사진 삭제하고 이모지 사용</button>
+          <button class="sub" onclick="resetHearts()">하트 전체 초기화</button>
         </div>
-        <div class="hint">※ 다운로드가 안 될 경우, 완성된 명함 영역을 화면 캡쳐해서 저장할 수 있습니다.</div>
+        <div class="hint">※ 하트 받기 시작을 누르면 입력칸이 숨겨진 화면으로 바뀝니다. 그 상태로 기기를 건네주세요.<br>※ 다운로드가 안 될 경우, 완성된 명함 영역을 화면 캡쳐해서 저장할 수 있습니다.</div>
       </div>
 
       <div class="previewBox">
@@ -442,20 +554,20 @@
               </div>
 
               <div class="mission" id="cardMission">사람의 가능성을 발견하는 사람</div>
-              <div class="cardName" id="cardName">이시현</div>
-              <p class="intro" id="cardIntro">저는 질문을 통해 사람의 이야기를 발견하고, 함께 성장하는 순간을 좋아합니다.</p>
+              <div class="cardName" id="cardName">정재이</div>
+              <p class="intro" id="cardIntro">저는 질문을 통해 사람의 이야기를 발견합니다</p>
 
               <div class="info">
                 <div id="cardEmail">✉️ hello@email.com</div>
                 <div id="cardPhone">📞 010-0000-0000</div>
               </div>
 
-              <div class="hashTitle">TODAY'S HASHTAGS</div>
+              <div class="hashTitle">나랑 친해지면 좋은 점</div>
               <div class="hashtags" id="tagArea"></div>
             </div>
             <div class="footer">
-              <span>Digital Name Card</span>
-              <span>Made by Me</span>
+              <span>나를 찾아줘</span>
+              <span>Made by J</span>
             </div>
           </div>
         </div>
@@ -463,74 +575,189 @@
     </section>
   </div>
 
+  <div class="heartMode" id="heartMode">
+    <div class="hmInner">
+      <div class="hmProfile">
+        <div class="hmAvatar" id="hmAvatar">🌱</div>
+        <div class="hmName" id="hmName">정재이</div>
+        <div class="hmMission" id="hmMission">사람의 가능성을 발견하는 사람</div>
+      </div>
+      <p class="hmGuide">공감 가는 문구에 하트를 눌러주세요<br>여러 개 눌러도 괜찮아요</p>
+      <div class="hmList" id="hmList"></div>
+      <button class="main" style="width:100%" onclick="exitHeartMode()">완료 · 편집으로 돌아가기</button>
+    </div>
+  </div>
+
   <script>
-    const fields = ["name", "emoji", "mission", "email", "phone", "intro", "hashtags", "theme"];
+    const STORE_KEY = "namecard-v2";
+    const textFields = ["name", "emoji", "mission", "email", "phone", "hashtags"];
+    const introFields = ["intro0", "intro1", "intro2", "intro3"];
+
     let photoData = "";
+    let hearts = [0, 0, 0, 0];
+    let picked = 0;
 
     function $(id) { return document.getElementById(id); }
 
-    function setTheme(theme, button) {
-      $("theme").value = theme;
-      document.querySelectorAll(".themeOption").forEach(el => el.classList.remove("active"));
-      if (button) button.classList.add("active");
-      updateCard();
+    function esc(s) {
+      return String(s).replace(/[&<>"']/g, c => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+      }[c]));
     }
 
     function setEmoji(e) {
       $("emoji").value = e;
       photoData = "";
-      updateCard();
+      $("photo").value = "";
+      render();
     }
 
     function resetPhoto() {
       photoData = "";
       $("photo").value = "";
-      updateCard();
+      render();
     }
 
-    function updateCard() {
-      $("cardName").textContent = $("name").value || "이름";
-      $("cardMission").textContent = $("mission").value || "비전";
-      $("cardIntro").textContent = $("intro").value || "나를 소개하는 문구를 입력하세요.";
+    /* ===== 하트 ===== */
+    function addHeart(i) {
+      hearts[i]++;
+      render();
+      pop($("heartBtn" + i));
+      pop($("hmHeart" + i));
+    }
+
+    function pop(el) {
+      if (!el) return;
+      el.classList.add("pop");
+      setTimeout(() => el.classList.remove("pop"), 130);
+    }
+
+    function resetHearts() {
+      if (!confirm("모든 하트를 0으로 되돌릴까요?")) return;
+      hearts = [0, 0, 0, 0];
+      render();
+    }
+
+    function setPick(i) {
+      picked = i;
+      render();
+    }
+
+    /* ===== 하트 받기 모드 ===== */
+    function enterHeartMode() {
+      document.body.classList.add("heartOn");
+      window.scrollTo(0, 0);
+      render();
+    }
+
+    function exitHeartMode() {
+      document.body.classList.remove("heartOn");
+      window.scrollTo(0, 0);
+    }
+
+    /* ===== 화면 그리기 ===== */
+    function render() {
+      const name = $("name").value || "이름";
+      const mission = $("mission").value || "나를 찾아줘";
+      const intros = introFields.map(id => $(id).value.trim());
+
+      // 명함
+      $("cardName").textContent = name;
+      $("cardMission").textContent = mission;
+      $("cardIntro").textContent = intros[picked] || "명함에 올릴 문구를 골라주세요.";
       $("cardEmail").textContent = "✉️ " + ($("email").value || "email@example.com");
       $("cardPhone").textContent = "📞 " + ($("phone").value || "010-0000-0000");
 
+      const avatarHTML = photoData
+        ? `<img src="${photoData}" alt="프로필 사진" />`
+        : null;
       const avatar = $("avatar");
-      if (photoData) {
-        avatar.innerHTML = `<img src="${photoData}" alt="프로필 사진" />`;
-      } else {
-        avatar.textContent = $("emoji").value || "🙂";
-      }
+      if (avatarHTML) avatar.innerHTML = avatarHTML;
+      else avatar.textContent = $("emoji").value || "🙂";
 
-      const card = $("card");
-      card.className = "namecard " + $("theme").value;
-
-      const tags = $("hashtags").value
-        .split(",")
-        .map(t => t.trim())
-        .filter(Boolean)
-        .slice(0, 6);
-
+      const tags = $("hashtags").value.split(",").map(t => t.trim()).filter(Boolean).slice(0, 6);
       $("tagArea").innerHTML = tags.map(t => {
         const clean = t.startsWith("#") ? t : "#" + t;
-        return `<span class="tag">${clean}</span>`;
+        return `<span class="tag">${esc(clean)}</span>`;
       }).join("");
+
+      // 편집 화면의 하트 수 / 선택 표시
+      hearts.forEach((n, i) => {
+        $("heartCount" + i).textContent = n;
+        $("heartBtn" + i).firstChild.nodeValue = n > 0 ? "❤️ " : "🤍 ";
+        $("introItem" + i).classList.toggle("picked", i === picked);
+      });
+      const radios = document.querySelectorAll('input[name="pick"]');
+      if (radios[picked]) radios[picked].checked = true;
+
+      // 하트 받기 모드 화면
+      $("hmName").textContent = name;
+      $("hmMission").textContent = mission;
+      const hmAvatar = $("hmAvatar");
+      if (avatarHTML) hmAvatar.innerHTML = avatarHTML;
+      else hmAvatar.textContent = $("emoji").value || "🙂";
+
+      const filled = intros.map((t, i) => ({ t, i })).filter(x => x.t);
+      $("hmList").innerHTML = filled.length
+        ? filled.map(({ t, i }) => `
+          <div class="hmItem">
+            <div class="hmNum">${i + 1}</div>
+            <div class="hmText">${esc(t)}</div>
+            <button type="button" class="hmHeart" id="hmHeart${i}" onclick="addHeart(${i})">
+              ${hearts[i] > 0 ? "❤️" : "🤍"} <span>${hearts[i]}</span>
+            </button>
+          </div>`).join("")
+        : `<div class="hmEmpty">아직 작성한 문구가 없습니다.<br>편집 화면에서 1~4번 문구를 먼저 써주세요.</div>`;
+
+      save();
     }
 
-    $("photo").addEventListener("change", function(e) {
+    /* ===== 저장 / 불러오기 ===== */
+    function save() {
+      try {
+        const data = { hearts, picked, photoData };
+        textFields.concat(introFields).forEach(id => data[id] = $(id).value);
+        localStorage.setItem(STORE_KEY, JSON.stringify(data));
+      } catch (e) { /* 저장 공간이 없어도 앱은 그대로 동작합니다 */ }
+    }
+
+    function load() {
+      let data;
+      try {
+        data = JSON.parse(localStorage.getItem(STORE_KEY) || "null");
+      } catch (e) { return; }
+      if (!data) return;
+
+      textFields.concat(introFields).forEach(id => {
+        if (typeof data[id] === "string") $(id).value = data[id];
+      });
+      if (Array.isArray(data.hearts) && data.hearts.length === 4) {
+        hearts = data.hearts.map(n => Number(n) || 0);
+      }
+      if (typeof data.picked === "number" && data.picked >= 0 && data.picked <= 3) {
+        picked = data.picked;
+      }
+      if (typeof data.photoData === "string") photoData = data.photoData;
+    }
+
+    /* ===== 이벤트 ===== */
+    $("photo").addEventListener("change", function (e) {
       const file = e.target.files[0];
       if (!file) return;
       const reader = new FileReader();
-      reader.onload = function(event) {
+      reader.onload = function (event) {
         photoData = event.target.result;
-        updateCard();
+        render();
       };
       reader.readAsDataURL(file);
     });
 
-    fields.filter(id => id !== "theme").forEach(id => $(id).addEventListener("input", updateCard));
-    updateCard();
+    textFields.concat(introFields).forEach(id => $(id).addEventListener("input", render));
 
+    load();
+    render();
+
+    /* ===== 다운로드 ===== */
     async function downloadCard() {
       const card = $("card");
       const canvas = await html2canvas(card, {
@@ -540,7 +767,7 @@
       });
 
       const link = document.createElement("a");
-      const name = ($("name").value || "digital-name-card").replace(/[\\/:*?"<>|]/g, "");
+      const name = ($("name").value || "digital-name-card").replace(/[\/:*?"<>|]/g, "");
       link.download = `${name}_디지털명함.png`;
       link.href = canvas.toDataURL("image/png");
       link.click();
